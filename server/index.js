@@ -4,11 +4,22 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const DB_FILE = path.join(__dirname, 'db.json');
 
+// CORS configuration for production
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    /\.vercel\.app$/,
+    /\.netlify\.app$/,
+  ],
+  credentials: true,
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' })); // For base64 images
 
 // Initialize database file if it doesn't exist
@@ -241,12 +252,28 @@ app.post('/api/customers', async (req, res) => {
   }
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
 // Start server
 async function start() {
   await initDB();
   app.listen(PORT, () => {
-    console.log(`\n🚀 Backend server running on http://localhost:${PORT}`);
-    console.log(`📊 Database file: ${DB_FILE}\n`);
+    const env = process.env.NODE_ENV || 'development';
+    console.log(`\n🚀 Backend server running`);
+    console.log(`📍 Environment: ${env}`);
+    console.log(`🌐 Port: ${PORT}`);
+    console.log(`📊 Database: ${DB_FILE}`);
+    if (env === 'development') {
+      console.log(`🔗 URL: http://localhost:${PORT}`);
+    }
+    console.log('');
   });
 }
 

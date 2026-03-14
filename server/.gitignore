@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Database (optional - comment out if you want to keep in git)
+# db.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store

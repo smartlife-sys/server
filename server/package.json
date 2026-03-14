@@ -1,0 +1,17 @@
+{
+  "name": "hope-group-server",
+  "version": "1.0.0",
+  "description": "Backend API server for Hope Group e-commerce platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": ["api", "backend", "express"],
+  "author": "Hope Group",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
